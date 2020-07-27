@@ -38,6 +38,12 @@ class VacuumWorldEnv(gym.Env):
 
         self.action_space=spaces.Discrete(5)
 
+        self.observation_space=spaces.Tuple((
+                spaces.MultiDiscrete((N*N)*[2]), # Board
+                spaces.Discrete(N*N), # row
+                spaces.Discrete(N*N), # col
+        ))
+
         self.reset()
 
     def Forward(self):
@@ -118,7 +124,7 @@ class VacuumWorldEnv(gym.Env):
         actions={0:self.Left,1:self.Forward,2:self.Right,3:self.Vacuum,4:self.Off}
         actions[action]()
 
-        state=self.room
+        state=tuple(self.room.board),self.row,self.col
         reward=self.reward
         done=1 if self.cmd=='Off' else 0
         info={}
