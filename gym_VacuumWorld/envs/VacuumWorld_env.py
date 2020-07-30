@@ -15,6 +15,7 @@ RIGHT = 2
 VACUUM = 3
 OFF = 4
 
+from numpy import prod
 
 class VacuumWorldEnv(gym.Env):
 
@@ -38,11 +39,6 @@ class VacuumWorldEnv(gym.Env):
 
         self.action_space=spaces.Discrete(5)
 
-        self.observation_space=spaces.Tuple((
-                spaces.MultiDiscrete((N*N)*[2]), # Board
-                spaces.Discrete(N*N), # row
-                spaces.Discrete(N*N), # col
-        ))
 
         self.reset()
 
@@ -174,6 +170,7 @@ class VacuumWorldEnv(gym.Env):
         self.cmd=''
         self.msg=''
 
+        return tuple(self.room.board),self.row,self.col
 
     def render(self, mode='human'):
         board=Board(*self.room.shape)
